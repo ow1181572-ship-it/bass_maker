@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bass Masterclass & Tuning Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand-logo">
+                <span class="logo-icon">🎸</span>
+                <span class="logo-text">BASS<span class="highlight">HUB</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#tuner" class="active">Tuner</a>
+                <a href="#metronome">Metronome</a>
+                <a href="#techniques">Techniques & Genres</a>
+                <a href="#lessons">Video Lessons</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="loginBtn">Log In</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1>Master the Low End</h1>
+            <p>Interactive tuner, drop-tuning reference guide, technique tutorials, and practice tools for 4-string & 5-string bassists.</p>
+        </header>
+
+        <!-- Interactive Tuner Section -->
+        <section id="tuner" class="card tuner-section">
+            <div class="card-header">
+                <h2>Interactive Bass Tuner</h2>
+                <div class="tuner-controls-top">
+                    <div class="control-group">
+                        <label for="stringCount">Strings:</label>
+                        <select id="stringCount" class="select-input">
+                            <option value="4">4-String</option>
+                            <option value="5">5-String</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="tuningPreset">Preset Tuning:</label>
+                        <select id="tuningPreset" class="select-input">
+                            <option value="standard">Standard (E-A-D-G / B-E-A-D-G)</option>
+                            <option value="dropD">Drop D (D-A-D-G)</option>
+                            <option value="lowC">Low C (C-G-C-F / Drop C)</option>
+                            <option value="lowB">Low B Standard / Drop A</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Headstock & Fretboard Display -->
+            <div class="headstock-display">
+                <div class="strings-container" id="stringsContainer">
+                    <!-- Dynamic string buttons generated via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Tuner Readout -->
+            <div class="tuner-readout">
+                <div class="readout-frequency" id="readoutFreq">-- Hz</div>
+                <div class="readout-note" id="readoutNote">Select a string</div>
+                <div class="readout-status" id="readoutStatus">Click any string button to play audio reference pitch</div>
+            </div>
+        </section>
+
+        <!-- Metronome Section -->
+        <section id="metronome" class="card metronome-section">
+            <div class="card-header">
+                <h2>Practice Metronome</h2>
+            </div>
+            <div class="metronome-display">
+                <div class="bpm-counter">
+                    <span id="bpmValue">120</span> <span class="bpm-label">BPM</span>
+                </div>
+                <input type="range" id="bpmSlider" min="40" max="220" value="120" class="slider">
+                <div class="metronome-controls">
+                    <button id="toggleMetronome" class="btn btn-primary btn-large">Start Metronome</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technique Guides Section -->
+        <section id="techniques" class="card techniques-section">
+            <div class="card-header">
+                <h2>Technique & Genre Breakdown</h2>
+            </div>
+            <div class="genre-grid">
+                <article class="genre-card">
+                    <div class="genre-badge metal">Metal</div>
+                    <h3>Metal & Heavy Riffing</h3>
+                    <p>Learn down-picking precision, aggressive fingerstyle attack, low-end tone sculpting, and handling drop tunings (Drop D, Drop C, Low B).</p>
+                    <ul class="key-points">
+                        <li><strong>Tuning:</strong> Drop D, Drop C, Low B</li>
+                        <li><strong>Tone:</strong> High mids, distortion/drive blend</li>
+                        <li><strong>Focus:</strong> Lock with double-bass kick drums</li>
+                    </ul>
+                </article>
+
+                <article class="genre-card">
+                    <div class="genre-badge rock">Rock</div>
+                    <h3>Rock & Hard Rock Lines</h3>
+                    <p>Master solid root-five groove driving, steady Eighth-note pulse, pick technique dynamics, and bridging rhythm guitar with drums.</p>
+                    <ul class="key-points">
+                        <li><strong>Tuning:</strong> Standard E, Drop D</li>
+                        <li><strong>Tone:</strong> Warm punch, classic P-bass tone</li>
+                        <li><strong>Focus:</strong> Consistent dynamic level and groove</li>
+                    </ul>
+                </article>
+
+                <article class="genre-card">
+                    <div class="genre-badge jazz">Jazz</div>
+                    <h3>Jazz & Walking Bass</h3>
+                    <p>Construct walking basslines using voice leading, arpeggios, chromatic passing tones, and fluid finger technique with smooth tone.</p>
+                    <ul class="key-points">
+                        <li><strong>Tuning:</strong> Standard E (4-String / 5-String)</li>
+                        <li><strong>Tone:</strong> Warm neck pickup, soft finger touch</li>
+                        <li><strong>Focus:</strong> Harmonic progression & swing feel</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <!-- Video Lessons Section -->
+        <section id="lessons" class="card lessons-section">
+            <div class="card-header">
+                <h2>Video Lesson Hub</h2>
+                <p>Click any lesson to watch targeted video demonstrations for tricky bass lines and tunings.</p>
+            </div>
+            <div class="video-grid">
+                <div class="video-card" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'How to Tune Down to Drop D & Low C')">
+                    <div class="video-thumbnail">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="video-info">
+                        <h4>How to Tune Down: Drop D & Low C</h4>
+                        <span class="video-duration">5:45 • Beginner</span>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Conquering Metal Basslines & Fast Fingerstyle')">
+                    <div class="video-thumbnail">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="video-info">
+                        <h4>Metal Bass Technique & Fast Riffs</h4>
+                        <span class="video-duration">8:20 • Intermediate</span>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', '5-String Bass Low B String Control & Muting')">
+                    <div class="video-thumbnail">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="video-info">
+                        <h4>5-String Bass: Low B & Muting Secrets</h4>
+                        <span class="video-duration">6:50 • Intermediate</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal (Email or Phone Login) -->
+    <div class="modal-backdrop" id="authModal">
+        <div class="modal-card">
+            <button class="modal-close" id="closeAuthModal">&times;</button>
+            <h3 id="modalTitle">Welcome Back</h3>
+            <p class="modal-subtitle">Log in to track your bass learning progress</p>
+
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="emailTabBtn">Email</button>
+                <button class="tab-btn" id="phoneTabBtn">Phone Number</button>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group" id="emailGroup">
+                    <label for="emailInput">Email Address</label>
+                    <input type="email" id="emailInput" class="form-input" placeholder="musician@example.com">
+                </div>
+
+                <div class="form-group hidden" id="phoneGroup">
+                    <label for="phoneInput">Phone Number</label>
+                    <input type="tel" id="phoneInput" class="form-input" placeholder="+1 (555) 000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordInput">Password / Access Code</label>
+                    <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">Continue</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal-backdrop" id="videoModal">
+        <div class="modal-card modal-large">
+            <button class="modal-close" id="closeVideoModal">&times;</button>
+            <h3 id="videoModalTitle">Lesson Video</h3>
+            <div class="video-container">
+                <iframe id="videoIframe" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
