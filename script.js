@@ -1,7 +1,19 @@
-// JavaScript Logic for Bass Masterclass & Tuning Hub
+// ==========================================
+// SUPABASE CLIENT INITIALIZATION
+// ==========================================
+const SUPABASE_URL = 'https://njkiedsstvgrabtcqxlp.supabase.co';    // Replace with your Supabase Project URL
+const SUPABASE_ANON_KEY = 'sb_publishable_PlRvZ-qXs9gJYu61TMJXbQ_4Gxr3rJP'; // Replace with your Supabase Anon Public Key
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+
+// ==========================================
+// BASS TUNER FREQUENCIES & PRESETS
+// ==========================================
 
 // Frequency definitions (in Hz) for bass notes
 const frequencies = {
+    'A0': 27.50,
     'B0': 30.87,
     'C1': 32.70,
     'D1': 36.71,
@@ -115,7 +127,10 @@ tuningPresetSelect.addEventListener('change', (e) => {
     renderTuner();
 });
 
-// Metronome Logic
+
+// ==========================================
+// PRACTICE METRONOME LOGIC
+// ==========================================
 let metronomeInterval = null;
 let isMetronomeRunning = false;
 const bpmSlider = document.getElementById('bpmSlider');
@@ -168,7 +183,10 @@ toggleMetronomeBtn.addEventListener('click', () => {
     else startMetronome();
 });
 
-// Authentication Modal Logic
+
+// ==========================================
+// AUTHENTICATION MODAL & SUPABASE BACKEND
+// ==========================================
 const authModal = document.getElementById('authModal');
 const loginBtn = document.getElementById('loginBtn');
 const signupBtn = document.getElementById('signupBtn');
@@ -201,13 +219,48 @@ phoneTabBtn.onclick = () => {
     emailGroup.classList.add('hidden');
 };
 
-function handleAuthSubmit(e) {
+// Backend-connected form submission handler
+async function handleAuthSubmit(e) {
     e.preventDefault();
-    alert('Logged in successfully! Welcome to Bass Hub.');
-    authModal.classList.remove('active');
+    
+    const email = document.getElementById('emailInput').value.trim();
+    const phone = document.getElementById('phoneInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
+    
+    const isEmailActive = !document.getElementById('emailGroup').classList.contains('hidden');
+
+    try {
+        if (isEmailActive && email) {
+            // Register or authenticate user via Supabase Auth
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+            });
+
+            if (error) throw error;
+            alert('Success! Check your email for confirmation or login credentials.');
+        } else {
+            // Insert phone/email record directly into your Supabase 'profiles' database table
+            const { data, error } = await supabaseClient
+                .from('profiles')
+                .insert([{ email: email || null, phone: phone || null }]);
+
+            if (error) throw error;
+            alert('Profile successfully saved to your Supabase database!');
+        }
+
+        authModal.classList.remove('active');
+        document.getElementById('authForm').reset();
+    } catch (error) {
+        console.error('Supabase error:', error.message);
+        alert('Database Error: ' + error.message);
+    }
 }
 
-// Video Modal Logic
+
+// ==========================================
+// VIDEO LESSON MODAL LOGIC
+// ==========================================
 const videoModal = document.getElementById('videoModal');
 const closeVideoModal = document.getElementById('closeVideoModal');
 const videoIframe = document.getElementById('videoIframe');
@@ -224,5 +277,8 @@ closeVideoModal.onclick = () => {
     videoIframe.src = '';
 };
 
-// Initial Render
+
+// ==========================================
+// INITIAL RENDER
+// ==========================================
 renderTuner();
