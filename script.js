@@ -196,11 +196,107 @@ const phoneTabBtn = document.getElementById('phoneTabBtn');
 const emailGroup = document.getElementById('emailGroup');
 const phoneGroup = document.getElementById('phoneGroup');
 
-function openAuth(mode) {
-    document.getElementById('modalTitle').textContent = mode === 'login' ? 'Welcome Back' : 'Create Account';
-    authModal.classList.add('active');
-}
+// Replace your old handleAuthSubmit function with this updated one:
+async function handleAuthSubmit(e) {
+    e.preventDefault();
+    
+    const fullName = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const phone = document.getElementById('phoneInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
+    
+    const isEmailActive = !document.getElementById('emailGroup').classList.contains('hidden');
 
+    try {
+        if (isEmailActive && email) {
+            // Register user with Supabase Auth and pass full name into user_metadata
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        full_name: fullName
+                    }
+                }
+            });
+
+            if (error) throw error;
+            
+            // Also save/sync a row in your public.profiles table with their name
+            if (data.user) {
+                await supabaseClient
+                    .from('profiles')
+                    .insert([{ id: data.user.id, name: fullName, email: email }]);
+            }
+
+            alert(`Success, ${fullName}! Check your email for confirmation.`);
+        } else {
+            // Insert profile record directly into your custom 'profiles' table with name & phone
+            const { data, error } = await supabaseClient
+                .from('profiles')
+                .insert([{ name: fullName || null, email: email || null, phone: phone || null }]);
+
+            if (error) throw error;
+            alert(`Profile for ${fullName} successfully saved to Supabase!`);
+        }
+
+        authModal.classList.remove('active');
+        document.getElementById('authForm').reset();
+    } catch (error) {
+        console.error('Supabase error:', error.message);
+        alert('Database Error: ' + error.message);
+    }
+}// Replace your old handleAuthSubmit function with this updated one:
+async function handleAuthSubmit(e) {
+    e.preventDefault();
+    
+    const fullName = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const phone = document.getElementById('phoneInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
+    
+    const isEmailActive = !document.getElementById('emailGroup').classList.contains('hidden');
+
+    try {
+        if (isEmailActive && email) {
+            // Register user with Supabase Auth and pass full name into user_metadata
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        full_name: fullName
+                    }
+                }
+            });
+
+            if (error) throw error;
+            
+            // Also save/sync a row in your public.profiles table with their name
+            if (data.user) {
+                await supabaseClient
+                    .from('profiles')
+                    .insert([{ id: data.user.id, name: fullName, email: email }]);
+            }
+
+            alert(`Success, ${fullName}! Check your email for confirmation.`);
+        } else {
+            // Insert profile record directly into your custom 'profiles' table with name & phone
+            const { data, error } = await supabaseClient
+                .from('profiles')
+                .insert([{ name: fullName || null, email: email || null, phone: phone || null }]);
+
+            if (error) throw error;
+            alert(`Profile for ${fullName} successfully saved to Supabase!`);
+        }
+
+        authModal.classList.remove('active');
+        document.getElementById('authForm').reset();
+    } catch (error) {
+        console.error('Supabase error:', error.message);
+        alert('Database Error: ' + error.message);
+    }
+}
 loginBtn.onclick = () => openAuth('login');
 signupBtn.onclick = () => openAuth('signup');
 closeAuthModal.onclick = () => authModal.classList.remove('active');
